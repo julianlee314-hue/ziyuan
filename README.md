@@ -9,4 +9,4 @@ Live: https://julianlee314-hue.github.io/ziyuan/
 - Plot one (1,200) ships with a frozen ledger (job, habitat, color, register, hook)
 - Garden SRS / mems stay in the browser
 
-Enable Pages: Settings → Pages → Deploy from branch `main` / root.
+Enable Pages if the URL 404s: Settings → Pages → Deploy from branch `main` / root. Workflow `.github/workflows/pages.yml` deploys on each push to main.
