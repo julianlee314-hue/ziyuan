@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>字園 Zìyuán</title>
+<link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+<header class="topbar">
+<a class="brand" href="first-plot.html" style="text-decoration:none;color:inherit"><b>字園</b><span>ZÌYUÁN</span></a>
+<nav class="nav">
+<button data-view="garden" class="active">園</button>
+<button data-view="nursery">苗圍</button>
+<button data-view="profile">字檔</button>
+</nav>
+</header>
+<main>
+<section class="view on" data-view="garden">
+<h1>園</h1>
+<p>先開苗圍播一顆種子。Pages seed 目前 10 字；全部 1200 字領檔在建置資料夾。</p>
+<div class="pots" id="garden-pots"></div>
+</section>
+<section class="view" data-view="nursery">
+<h1>苗圍</h1>
+<div class="catalog-grid" id="catalog-grid"></div>
+</section>
+<section class="view" data-view="profile">
+<div class="lookup">
+<div class="tian replay" id="tian"><div class="big" id="p-glyph">字</div></div>
+<div class="lookup-zy" id="p-zy"></div>
+<div class="lookup-actions">
+<button class="btn" id="btn-flip">Flip · English</button>
+<button class="btn ghost" id="btn-speak-f">女聲</button>
+<button class="btn ghost" id="btn-speak-m">男聲</button>
+</div>
+<p id="p-en-short" class="lead"></p>
+<p id="p-hook" class="lead"></p>
+</div>
+</section>
+</main>
+<script src="catalog.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
