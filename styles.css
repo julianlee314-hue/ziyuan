@@ -571,3 +571,54 @@ textarea:focus { border-color: var(--gold); }
   .tian .big { font-size: 4.2rem; }
   .flip-wrap { height: 250px; }
 }
+
+/* ——— language toggle (bottom-right) ——— */
+.lang-toggle {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  z-index: 40;
+  display: inline-flex;
+  align-items: center;
+  gap: 2px;
+  padding: 4px 6px;
+  background: rgba(255, 252, 245, 0.94);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(8px);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+.lang-toggle button {
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-weight: 500;
+  line-height: 1;
+}
+.lang-toggle button:hover {
+  color: var(--ink);
+  background: var(--paper-2);
+}
+.lang-toggle button.on {
+  background: var(--ink);
+  color: var(--paper);
+}
+.lang-toggle .lang-sep {
+  color: var(--line);
+  padding: 0 2px;
+  pointer-events: none;
+}
+@media (max-width: 860px) {
+  .lang-toggle {
+    right: 12px;
+    bottom: 12px;
+  }
+  .app {
+    padding-bottom: 96px; /* room above floating toggle */
+  }
+}

@@ -1,9 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-Hant-TW">
+<html lang="zh-Hant-TW" data-lang="zh">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>前言 · 字園 Zìyuán</title>
+  <title data-i18n="doc.title.preface">前言 · 字園 Zìyuán</title>
+  <script>
+    (function () {
+      try {
+        var l = localStorage.getItem("ziyuan-lang");
+        if (l !== "en" && l !== "zh") l = "zh";
+        document.documentElement.setAttribute("data-lang", l);
+        document.documentElement.lang = l === "en" ? "en" : "zh-Hant-TW";
+      } catch (e) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet" />
@@ -51,6 +61,10 @@
       font-size: 0.78rem;
       letter-spacing: 0.14em;
     }
+    html[data-lang="en"] [data-lang-only="zh"],
+    html[data-lang="zh"] [data-lang-only="en"] {
+      display: none !important;
+    }
   </style>
 </head>
 <body>
@@ -58,48 +72,78 @@
     <header class="topbar" style="grid-template-columns: 1fr auto;">
       <a class="brand" href="index.html" style="text-decoration:none;color:inherit">
         <b>字園</b>
-        <span>ZÌYUÁN / 字圃</span>
+        <span data-i18n="brand.sub">ZÌYUÁN / 字圃</span>
       </a>
       <nav class="nav">
-        <a href="index.html" class="iconbtn" style="text-decoration:none">回園</a>
+        <a href="index.html" class="iconbtn" style="text-decoration:none" data-i18n="nav.back">回園</a>
       </nav>
     </header>
 
     <article class="note">
       <div class="kicker">FIRST PLOT</div>
-      <h1>前言</h1>
-      <p class="sub">台灣華語字圃 · Traditional · 注音優先 · 不是 HSK</p>
+      <h1 data-i18n="preface.h1">前言</h1>
+      <p class="sub" data-i18n="preface.sub">台灣華語字圃 · Traditional · 注音優先 · 不是 HSK</p>
 
+      <div data-lang-only="zh">
+        <p>
+          <strong>字園</strong>把每個漢字當成一株植物。
+          苗圃裡是種子；播進園裡之後，要靠<strong>澆水</strong>——間隔提取——才會長。
+          重讀不是澆水。
+        </p>
+
+        <p>這一圃的約定：</p>
+        <ul>
+          <li>只用繁體，語感貼台灣華語。</li>
+          <li>注音在前；拼音可開，但不當主軸。</li>
+          <li>不是依 HSK 分級。一圃叫<strong>市井</strong>：路上、螢幕、對話裡會撞到的字。</li>
+        </ul>
+
+        <p>
+          <strong>Plot one = 市井 1200。</strong>
+          每一個字帶一份凍結的帳本（ledger）：
+          job、habitat、color、register、hook。
+          Pages 上先掛 10 顆種子，讓園能發芽；整塊一圃在建置資料夾。
+        </p>
+
+        <p>
+          園裡的 SRS、筆記、自訂 mem 只存在你的瀏覽器。
+          清空本機園不會動到目錄。
+        </p>
+      </div>
+
+      <div data-lang-only="en" hidden>
+        <p>
+          <strong>Zìyuán</strong> treats every Chinese character as a plant.
+          The nursery holds seeds; once planted in the garden, they grow through
+          <strong>watering</strong>—spaced retrieval—not re-reading.
+        </p>
+
+        <p>This plot’s rules:</p>
+        <ul>
+          <li>Traditional characters only, tuned to Taiwan Mandarin.</li>
+          <li>Zhuyin first; pinyin is optional, never the spine.</li>
+          <li>Not HSK-graded. Plot one is <strong>Street</strong>: characters you meet on the road, on screens, in talk.</li>
+        </ul>
+
+        <p>
+          <strong>Plot one = Street 1200.</strong>
+          Each character carries a frozen ledger:
+          job, habitat, color, register, hook.
+          Pages ships 10 seeds so the garden can sprout; the full plot lives in the build folder.
+        </p>
+
+        <p>
+          Garden SRS, notes, and custom mems live only in your browser.
+          Clearing the local garden does not touch the catalog.
+        </p>
+      </div>
+
+      <p class="seal" data-i18n="preface.seal">字圃 · 一</p>
       <p>
-        <strong>字園</strong>把每個漢字當成一株植物。
-        苗圃裡是種子；播進園裡之後，要靠<strong>澆水</strong>——間隔提取——才會長。
-        重讀不是澆水。
-      </p>
-
-      <p>這一圃的約定：</p>
-      <ul>
-        <li>只用繁體，語感貼台灣華語。</li>
-        <li>注音在前；拼音可開，但不當主軸。</li>
-        <li>不是依 HSK 分級。一圃叫<strong>市井</strong>：路上、螢幕、對話裡會撞到的字。</li>
-      </ul>
-
-      <p>
-        <strong>Plot one = 市井 1200。</strong>
-        每一個字帶一份凍結的帳本（ledger）：
-        job、habitat、color、register、hook。
-        Pages 上先掛 10 顆種子，讓園能發芽；整塊一圃在建置資料夾。
-      </p>
-
-      <p>
-        園裡的 SRS、筆記、自訂 mem 只存在你的瀏覽器。
-        清空本機園不會動到目錄。
-      </p>
-
-      <p class="seal">字圃 · 一</p>
-      <p>
-        <a class="btn back" href="index.html">進入字園</a>
+        <a class="btn back" href="index.html" data-i18n="preface.enter">進入字園</a>
       </p>
     </article>
   </div>
+  <script src="i18n.js"></script>
 </body>
 </html>

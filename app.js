@@ -14,15 +14,15 @@
     settings: "ziyuan-settings",
   };
 
+  function t(key, vars) {
+    const I = window.ZIYUAN_I18N;
+    return I && I.t ? I.t(key, vars) : key;
+  }
+
   const STAGES = ["seed", "sprout", "leaf", "bloom"];
-  const STAGE_LABEL = {
-    seed: "種子",
-    sprout: "芽",
-    leaf: "葉",
-    bloom: "盛開",
-    wilt: "萎",
-    dead: "枯",
-  };
+  function stageLabel(stage) {
+    return t("stage." + stage);
+  }
   // Hours until next watering after a successful water at this stage
   const INTERVAL_H = { seed: 6, sprout: 24, leaf: 72, bloom: 168 };
   const WILT_AFTER_H = 48; // overdue → wilt
@@ -201,19 +201,21 @@
     const flag = $("demo-flag");
     if (!flag) return;
     if (settings.demoOn) {
-      flag.textContent = "示範鐘 · +" + formatOffset(virtualOffsetMs);
+      flag.textContent = t("demo.flag.on", { offset: formatOffset(virtualOffsetMs) });
       flag.classList.remove("off");
     } else {
-      flag.textContent = "真實時間";
+      flag.textContent = t("demo.flag.off");
       flag.classList.add("off");
     }
   }
 
   function formatOffset(ms) {
     const h = Math.floor(ms / 3600e3);
-    if (h < 24) return h + "時";
+    const uh = t("demo.unit.h");
+    const ud = t("demo.unit.d");
+    if (h < 24) return h + uh;
     const d = Math.floor(h / 24);
-    return d + "日" + (h % 24 ? (h % 24) + "時" : "");
+    return d + ud + (h % 24 ? (h % 24) + uh : "");
   }
 
   // ——— garden ———
@@ -228,7 +230,7 @@
     pots.innerHTML = "";
     const zs = Object.keys(garden);
     if (!zs.length) {
-      pots.innerHTML = '<div class="empty">園裡還沒有字。去苗圃播幾顆種子。</div>';
+      pots.innerHTML = '<div class="empty">' + esc(t("empty.garden")) + "</div>";
       return;
     }
     zs.sort((a, b) => (garden[a].lastWatered || 0) - (garden[b].lastWatered || 0));
@@ -249,8 +251,8 @@
         '<div class="zy">' + esc(c?.zy || "") + "</div>" +
         (settings.pinyin ? '<div class="py">' + esc(c?.py || "") + "</div>" : "") +
         '<div class="stage-label"><span class="stage-dot ' + stage + '"></span>' +
-        STAGE_LABEL[stage] +
-        (due && stage !== "dead" ? " · 待澆" : "") +
+        stageLabel(stage) +
+        (due && stage !== "dead" ? " · " + t("stage.due") : "") +
         "</div>";
       el.addEventListener("click", () => {
         selectedZ = z;
@@ -277,7 +279,7 @@
     const grid = $("catalog-grid");
     grid.innerHTML = "";
     if (!slice.length) {
-      grid.innerHTML = '<div class="empty">這一圃還沒有種子。</div>';
+      grid.innerHTML = '<div class="empty">' + esc(t("empty.nursery")) + "</div>";
       return;
     }
     for (const c of slice) {
@@ -287,7 +289,7 @@
         '<div class="glyph">' + esc(c.z) + "</div>" +
         '<div class="zy">' + esc(c.zy) + "</div>" +
         (settings.pinyin ? '<div class="py">' + esc(c.py) + "</div>" : "") +
-        (garden[c.z] ? '<div class="stage-label">已在園</div>' : "");
+        (garden[c.z] ? '<div class="stage-label">' + esc(t("inGarden")) + "</div>" : "");
       el.addEventListener("click", () => {
         selectedZ = c.z;
         setView("profile");
@@ -317,9 +319,9 @@
 
     if (!settings.rich) return;
 
-    $("p-rank").textContent = "#" + c.i + " · 圃" + c.lv;
-    $("p-stk").textContent = (c.stk || "?") + " 畫";
-    $("p-stage").textContent = stage ? STAGE_LABEL[stage] : "未播";
+    $("p-rank").textContent = t("chip.plot", { i: c.i, lv: c.lv });
+    $("p-stk").textContent = t("chip.strokes", { n: c.stk || "?" });
+    $("p-stage").textContent = stage ? stageLabel(stage) : t("stage.unplanted");
 
     $("p-hook").textContent = c.stone?.hook || "";
     const chips = $("p-stone-chips");
@@ -327,9 +329,9 @@
     const chipBits = [];
     if (c.stone?.job) chipBits.push(["job", c.stone.job]);
     if (c.stone?.color) chipBits.push(["color", c.stone.color]);
-    if (c.stone?.register != null) chipBits.push(["register", "語域 " + c.stone.register]);
+    if (c.stone?.register != null) chipBits.push(["register", t("chip.register", { n: c.stone.register })]);
     (c.stone?.habitat || []).forEach((h) => chipBits.push(["habitat", h]));
-    if (c.stone?.pair) chipBits.push(["pair", "對 " + c.stone.pair]);
+    if (c.stone?.pair) chipBits.push(["pair", t("chip.pair", { z: c.stone.pair })]);
     if (c.stone?.frozen) chipBits.push(["frozen", "frozen"]);
     for (const [k, v] of chipBits) {
       const span = document.createElement("span");
@@ -337,13 +339,13 @@
       span.textContent = v;
       chips.appendChild(span);
     }
-    $("p-weather").textContent = c.stone?.weather ? "天氣：" + c.stone.weather : "";
+    $("p-weather").textContent = c.stone?.weather ? t("chip.weather", { w: c.stone.weather }) : "";
 
     $("p-en").textContent = c.en || "";
     const tw = $("p-tw");
     if (c.tw) {
       tw.style.display = "";
-      tw.textContent = "台灣：" + c.tw;
+      tw.textContent = t("chip.tw", { t: c.tw });
     } else {
       tw.style.display = "none";
       tw.textContent = "";
@@ -357,23 +359,23 @@
       span.textContent = r.zy + (settings.pinyin ? " · " + r.py : "") + (r.tag && r.tag !== "default" ? " (" + r.tag + ")" : "");
       rd.appendChild(span);
     });
-    $("p-py").textContent = settings.pinyin ? "拼音 " + (c.py || "") : "";
+    $("p-py").textContent = settings.pinyin ? t("chip.pinyin", { py: c.py || "" }) : "";
 
     const words = $("p-words");
     words.innerHTML = "";
     if (!(c.w || []).length) {
-      words.innerHTML = '<div class="empty" style="padding:12px">尚無詞束</div>';
+      words.innerHTML = '<div class="empty" style="padding:12px">' + esc(t("empty.words")) + "</div>";
     } else {
       for (const w of c.w) {
         const div = document.createElement("div");
         div.className = "word";
         div.innerHTML =
           '<div class="w">' + esc(w.w) + "</div>" +
-          (w.tw ? '<span class="twtag">台灣</span>' : "<span></span>") +
+          (w.tw ? '<span class="twtag">' + esc(t("chip.twTag")) + "</span>" : "<span></span>") +
           '<div class="meta">' + esc(w.zy || "") +
           (settings.pinyin && w.en ? " · " : w.en ? " · " : "") +
           esc(w.en || "") +
-          (w.cn ? "（陸：" + esc(w.cn) + "）" : "") +
+          (w.cn ? esc(t("chip.cn", { cn: w.cn })) : "") +
           "</div>";
         words.appendChild(div);
       }
@@ -415,7 +417,7 @@
     let mems = allMemsFor(c);
     if (!settings.adult) mems = mems.filter((m) => !m.adult);
     if (!mems.length) {
-      box.innerHTML = '<div class="empty" style="padding:12px">尚無 mem</div>';
+      box.innerHTML = '<div class="empty" style="padding:12px">' + esc(t("empty.mem")) + "</div>";
       return;
     }
     for (const m of mems) {
@@ -424,8 +426,8 @@
       div.innerHTML =
         "<div>" + esc(m.text) + "</div>" +
         '<div class="votes">' +
-        (m.adult ? "成人 · " : "") +
-        (m.votes != null ? m.votes + " 票" : "自訂") +
+        (m.adult ? t("mem.adultPrefix") : "") +
+        (m.votes != null ? t("mem.votes", { n: m.votes }) : t("mem.custom")) +
         "</div>";
       box.appendChild(div);
     }
@@ -480,7 +482,7 @@
     const wrap = $("quiz-wrap");
     wrap.innerHTML = "";
     if (!list.length) {
-      wrap.innerHTML = '<div class="quiz-empty">沒有渴株。去園裡看看，或播新種子。</div>';
+      wrap.innerHTML = '<div class="quiz-empty">' + esc(t("empty.quiz")) + "</div>";
       return;
     }
     const z = list[0];
@@ -503,7 +505,7 @@
         3
       );
       card.innerHTML =
-        '<div class="hint">注音是？</div>' +
+        '<div class="hint">' + esc(t("quiz.hint.zy")) + "</div>" +
         '<div class="prompt">' + esc(prompt) + "</div>" +
         '<div class="quiz-options"></div>';
     } else {
@@ -515,7 +517,7 @@
         3
       );
       card.innerHTML =
-        '<div class="hint">意思是？</div>' +
+        '<div class="hint">' + esc(t("quiz.hint.en")) + "</div>" +
         '<div class="prompt">' + esc(prompt) + "</div>" +
         '<div class="quiz-options"></div>';
     }
@@ -535,7 +537,7 @@
           b.disabled = true;
         });
         waterPlant(z, ok);
-        toast(ok ? "澆到了 · " + STAGE_LABEL[effectiveStage(garden[z])] : "還沒長好 · 再試");
+        toast(ok ? t("toast.water.ok", { stage: stageLabel(effectiveStage(garden[z])) }) : t("toast.water.miss"));
         setTimeout(() => {
           render();
           if (currentView === "garden") renderGarden();
@@ -571,8 +573,8 @@
     const box = $("tray");
     box.innerHTML = "";
     if (!tray.length) {
-      box.innerHTML = '<div class="empty">課床是空的。在字檔按「加入課床」。</div>';
-      $("lesson-note").textContent = "課床只是托盤；之後可做成小課。";
+      box.innerHTML = '<div class="empty">' + esc(t("empty.tray")) + "</div>";
+      $("lesson-note").textContent = t("lesson.note.empty");
       return;
     }
     for (const z of tray) {
@@ -582,7 +584,7 @@
       el.innerHTML =
         '<div class="glyph">' + esc(z) + "</div>" +
         '<div class="zy">' + esc(c?.zy || "") + "</div>";
-      el.title = "點一下打開字檔；長按或雙擊移出";
+      el.title = t("tray.title");
       el.addEventListener("click", () => {
         selectedZ = z;
         setView("profile");
@@ -591,19 +593,19 @@
         e.preventDefault();
         tray = tray.filter((x) => x !== z);
         persistTray();
-        toast("已移出課床");
+        toast(t("toast.tray.out"));
         renderLesson();
       });
       box.appendChild(el);
     }
-    $("lesson-note").textContent = "雙擊卡片可移出課床。資料存在本機瀏覽器。";
+    $("lesson-note").textContent = t("lesson.note.full");
   }
 
   // ——— speech ———
   function speak(z, gender) {
     const c = charByZ.get(z);
     if (!c || !window.speechSynthesis) {
-      toast("此瀏覽器沒有語音合成");
+      toast(t("toast.noSpeech"));
       return;
     }
     window.speechSynthesis.cancel();
@@ -743,7 +745,7 @@
     $("btn-flip").addEventListener("click", () => {
       flipped = !flipped;
       $("flip-card").classList.toggle("flipped", flipped);
-      $("btn-flip").textContent = flipped ? "Flip · 漢字" : "Flip · English";
+      $("btn-flip").textContent = flipped ? t("btn.flip.zh") : t("btn.flip.en");
     });
     $("btn-speak-f").addEventListener("click", () => speak(selectedZ, "f"));
     $("btn-speak-m").addEventListener("click", () => speak(selectedZ, "m"));
@@ -753,7 +755,7 @@
       if (!selectedZ) return;
       ensurePlant(selectedZ);
       persistGarden();
-      toast("已播進園裡：" + selectedZ);
+      toast(t("toast.seeded", { z: selectedZ }));
       renderProfile();
     });
     $("btn-tray").addEventListener("click", () => {
@@ -761,9 +763,9 @@
       if (!tray.includes(selectedZ)) {
         tray.push(selectedZ);
         persistTray();
-        toast("已加入課床：" + selectedZ);
+        toast(t("toast.tray.add", { z: selectedZ }));
       } else {
-        toast("課床裡已有 " + selectedZ);
+        toast(t("toast.tray.has", { z: selectedZ }));
       }
       if (currentView === "lesson") renderLesson();
     });
@@ -777,7 +779,7 @@
       persistGarden();
       $("new-mem").value = "";
       $("mem-adult").checked = false;
-      toast("mem 已選用");
+      toast(t("toast.mem"));
       renderMems(charByZ.get(selectedZ));
     });
 
@@ -791,7 +793,7 @@
     $("water-all").addEventListener("click", () => {
       const list = dueList();
       if (!list.length) {
-        toast("沒有到期的株");
+        toast(t("toast.noDue"));
         return;
       }
       setView("water");
@@ -799,13 +801,13 @@
 
     $("clear-garden").addEventListener("click", () => {
       if (!Object.keys(garden).length) {
-        toast("園已是空的");
+        toast(t("toast.gardenEmpty"));
         return;
       }
-      if (!confirm("清空本機園？（目錄與 seed mem 不受影響）")) return;
+      if (!confirm(t("confirm.clear"))) return;
       garden = {};
       persistGarden();
-      toast("本機園已清空");
+      toast(t("toast.cleared"));
       render();
     });
 
@@ -836,4 +838,13 @@
   // default rich panel off; show first char ready
   if (!selectedZ && Z.chars[0]) selectedZ = Z.chars[0].z;
   setView("garden");
+
+  if (window.ZIYUAN_I18N && window.ZIYUAN_I18N.onChange) {
+    window.ZIYUAN_I18N.onChange(function () {
+      // chrome already updated by i18n.apply; refresh dynamic views + flip label
+      const flipBtn = $("btn-flip");
+      if (flipBtn) flipBtn.textContent = flipped ? t("btn.flip.zh") : t("btn.flip.en");
+      render();
+    });
+  }
 })();
