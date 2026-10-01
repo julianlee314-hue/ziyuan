@@ -27,8 +27,6 @@
   const INTERVAL_H = { seed: 6, sprout: 24, leaf: 72, bloom: 168 };
   const WILT_AFTER_H = 48; // overdue → wilt
   const DEAD_AFTER_H = 120; // wilt overdue → dead
-  const PAGE_SIZE = 12;
-
   const charByZ = new Map(Z.chars.map((c) => [c.z, c]));
 
   // ——— time / demo clock ———
@@ -67,7 +65,6 @@
 
   let currentView = "nursery";
   let nurseryLv = 1;
-  let nurseryPage = 1;
   let selectedZ = Z.chars[0] ? Z.chars[0].z : null;
   let searchQ = "";
   let flipped = false;
@@ -268,21 +265,13 @@
     if (nurseryLv > 0) list = list.filter((c) => c.lv === nurseryLv);
     $("n-count").textContent = String(list.length);
 
-    const pages = Math.max(1, Math.ceil(list.length / PAGE_SIZE));
-    if (nurseryPage > pages) nurseryPage = pages;
-    if (nurseryPage < 1) nurseryPage = 1;
-    $("n-page").textContent = String(nurseryPage);
-    $("prev-page").disabled = nurseryPage <= 1;
-    $("next-page").disabled = nurseryPage >= pages;
-
-    const slice = list.slice((nurseryPage - 1) * PAGE_SIZE, nurseryPage * PAGE_SIZE);
     const grid = $("catalog-grid");
     grid.innerHTML = "";
-    if (!slice.length) {
+    if (!list.length) {
       grid.innerHTML = '<div class="empty">' + esc(t("empty.nursery")) + "</div>";
       return;
     }
-    for (const c of slice) {
+    for (const c of list) {
       const el = document.createElement("div");
       el.className = "seed-card" + (c.stone?.color === "gold" ? " gold" : "");
       el.innerHTML =
@@ -688,7 +677,6 @@
 
     $("q").addEventListener("input", (e) => {
       searchQ = e.target.value || "";
-      nurseryPage = 1;
       if (searchQ.trim()) {
         // jump to nursery when searching, and show matching profile if exact glyph
         const exact = Z.chars.find((c) => c.z === searchQ.trim());
@@ -707,7 +695,6 @@
     document.querySelectorAll(".beds [data-lv]").forEach((btn) => {
       btn.addEventListener("click", () => {
         nurseryLv = Number(btn.getAttribute("data-lv"));
-        nurseryPage = 1;
         document.querySelectorAll(".beds [data-lv]").forEach((b) => {
           b.classList.toggle("on", Number(b.getAttribute("data-lv")) === nurseryLv);
         });
@@ -727,15 +714,6 @@
       persistSettings();
       render();
     });
-    $("prev-page").addEventListener("click", () => {
-      nurseryPage--;
-      renderNursery();
-    });
-    $("next-page").addEventListener("click", () => {
-      nurseryPage++;
-      renderNursery();
-    });
-
     $("rich-toggle").addEventListener("change", (e) => {
       settings.rich = e.target.checked;
       persistSettings();

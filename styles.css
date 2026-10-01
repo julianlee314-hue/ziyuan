@@ -286,13 +286,6 @@ main { margin-top: 22px; }
   align-items: center;
   margin-bottom: 14px;
 }
-.pager { display: inline-flex; align-items: center; gap: 8px; margin-left: auto; }
-#n-page {
-  min-width: 1.5rem;
-  text-align: center;
-  font-weight: 600;
-}
-
 .lookup {
   max-width: 520px;
   margin: 0 auto 18px;
@@ -566,7 +559,6 @@ textarea:focus { border-color: var(--gold); }
     position: static;
   }
   .search input { width: 100%; }
-  .pager { margin-left: 0; }
   .tian { width: 140px; height: 140px; }
   .tian .big { font-size: 4.2rem; }
   .flip-wrap { height: 250px; }
