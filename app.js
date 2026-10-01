@@ -65,7 +65,7 @@
     demoRate: 2,
   });
 
-  let currentView = "garden";
+  let currentView = "nursery";
   let nurseryLv = 1;
   let nurseryPage = 1;
   let selectedZ = Z.chars[0] ? Z.chars[0].z : null;

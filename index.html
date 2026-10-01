@@ -17,7 +17,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@500;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css?v=plot1-1200" />
+  <link rel="stylesheet" href="styles.css?v=nursery-landing" />
 </head>
 <body>
   <div class="app">
@@ -27,8 +27,8 @@
         <span data-i18n="brand.sub">ZÌYUÁN / 字圃</span>
       </a>
       <nav class="nav">
-        <button data-view="garden" class="active" data-i18n="nav.garden">園</button>
-        <button data-view="nursery" data-i18n="nav.nursery">苗圃</button>
+        <button data-view="garden" data-i18n="nav.garden">園</button>
+        <button data-view="nursery" class="active" data-i18n="nav.nursery">苗圃</button>
         <button data-view="profile" data-i18n="nav.profile">字檔</button>
         <button data-view="water" data-i18n="nav.water">澆水</button>
         <button data-view="lesson" data-i18n="nav.lesson">課床</button>
@@ -49,7 +49,7 @@
       </div>
     </header>
     <main>
-      <section class="view on" data-view="garden">
+      <section class="view" data-view="garden">
         <div class="hero"><div><h1 data-i18n="garden.h1">園</h1><p data-i18n="garden.lead">每一個字是一株植物。澆水是提取練習，不是重讀。</p></div>
         <div class="stats">
           <div class="stat"><b id="g-planted">0</b><span data-i18n="stat.planted">已播</span></div>
@@ -63,7 +63,7 @@
         </div>
         <div class="pots" id="garden-pots"></div>
       </section>
-      <section class="view" data-view="nursery">
+      <section class="view on" data-view="nursery">
         <div class="hero"><div><h1 data-i18n="nursery.h1">苗圃</h1><p data-i18n="nursery.lead">5 × 1200＝6000 個不重複的字。一圃 市井 已上架 1200 字；二～五圃尚空。</p></div>
         <div class="stat"><b id="n-count">0</b><span data-i18n="stat.seeds">可見種子</span></div></div>
         <div class="beds">
@@ -155,8 +155,8 @@
     </main>
   </div>
   <div class="toast" id="toast"></div>
-  <script src="catalog.js?v=plot1-1200"></script>
-  <script src="i18n.js?v=plot1-1200"></script>
-  <script src="app.js?v=plot1-1200"></script>
+  <script src="catalog.js?v=nursery-landing"></script>
+  <script src="i18n.js?v=nursery-landing"></script>
+  <script src="app.js?v=nursery-landing"></script>
 </body>
 </html>
