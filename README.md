@@ -6,15 +6,16 @@ Live: https://julianlee314-hue.github.io/ziyuan/
 
 ## Plots
 
-`catalog.js` ships **2,400** unique Traditional Chinese singles:
+`catalog.js` ships **3,600** unique Traditional Chinese singles:
 
 | Plot | Level | Count | Notes |
 | --- | --- | --- | --- |
 | 一圃 市井 | lv=1 | 1,200 | Frequency-ordered Taiwan “street” coverage; exhaustive Zhuyin (破音 in `rd[]`) |
 | 二圃 | lv=2 | 1,200 | Next 1,200 BIAU1 singles after plot 1; Zhuyin-exhaustive, phonetic-first readings; no overlap with lv=1 |
-| 三～五圃 | — | 0 | Empty for later plots |
+| 三圃 | lv=3 | 1,200 | Next 1,200 BIAU1 singles after plots 1–2; Zhuyin-exhaustive; no overlap with lv=1–2 |
+| 四～五圃 | — | 0 | Empty for later plots |
 
-No per-character HTML pages yet. Plot 2 entries use thin Unihan English glosses, empty word bundles (`w:[]`), and minimal stone.
+No per-character HTML pages yet. Plots 2–3 entries use thin Unihan English glosses, empty word bundles (`w:[]`), and minimal stone.
 
 ## Data sources & license
 
@@ -33,7 +34,7 @@ Attribution: 數位發展部 CNS11643 全字庫；教育部字頻／一字多音
 - `styles.css` — ink / paper UI
 - `app.js` — search, lookup, local SRS garden, quiz watering, lesson tray
 - `i18n.js` — EN ↔ 中文 UI chrome (localStorage `ziyuan-lang`: `en` | `zh`)
-- `catalog.js` — plots 1–2 catalog (2400 characters)
+- `catalog.js` — plots 1–3 catalog (3600 characters)
 - `first-plot.html` — public note
 
 Garden SRS / mems stay in the browser (`localStorage`, `ziyuan-` keys). Planted seed glyphs keep working after the catalog expansion.
